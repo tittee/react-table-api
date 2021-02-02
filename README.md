@@ -1,5 +1,6 @@
 ## ทดสอบการแก้ปัญหา
-```1. หา component react ดังต่อนี้
+```
+1. หา component react ดังต่อนี้
    - date picker ที่ไว้เลือกวัน เดือน ปี ได้ โดยถ้าเลือกเป็น พศ. จะดีมาก
    - time picker เลือกเวลาได้ 
    - table สามารถ sort row ได้ตาม โดยคลิ๊ก บน header บนตาราง และทำ grop column ได้ ปรับแต่ง style ได้
