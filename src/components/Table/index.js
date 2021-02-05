@@ -1,7 +1,15 @@
 import React from 'react';
-import { useTable, usePagination } from 'react-table';
+import {
+  useTable,
+  useFilters,
+  useGlobalFilter,
+  useAsyncDebounce,
+  usePagination,
+} from 'react-table';
 import DateFormat from './../DateFormat';
 import Pagination from './components/Pagination';
+import GlobalFilter from './components/GlobalFilter';
+
 
 const Table = ({ columns, data }) => {
   // Use the state and functions returned from useTable to build your UI
@@ -11,13 +19,18 @@ const Table = ({ columns, data }) => {
     headerGroups,
     prepareRow,
     page, // Instead of using 'rows', we'll use page,
-    // which has only the rows for the active page
+    state,
+    visibleColumns,
+    preGlobalFilteredRows,
+    setGlobalFilter
   } = useTable(
     {
       columns,
       data,
       initialState: { pageIndex: 2 },
     },
+    useFilters,    
+    useGlobalFilter,
     usePagination
   );
 
@@ -31,10 +44,30 @@ const Table = ({ columns, data }) => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th {...column.getHeaderProps()}>
+                  {column.render('Header')}
+                  {/* Render the columns filter UI */}
+                  {/* <div>{column.canFilter ? column.render('Filter') : null}</div> */}
+                </th>
               ))}
             </tr>
           ))}
+          <tr>
+            <th
+              colSpan={visibleColumns.length}
+              style={{
+                textAlign: 'left',
+              }}
+            >
+              <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={state.globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                columns={columns}
+                data={data}
+              />
+            </th>
+          </tr>
         </thead>
         <tbody {...getTableBodyProps()}>
           {page.map((row, i) => {
