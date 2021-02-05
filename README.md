@@ -1,4 +1,18 @@
 ## ทดสอบการแก้ปัญหา
+
+## Run API โดย /api
+```
+1. cd /api
+1. yarn 
+2. yarn start
+```
+
+## Run React โดย
+```
+1. yarn 
+2. yarn start
+```
+
 ```
 1. หา component react ดังต่อนี้
    - date picker ที่ไว้เลือกวัน เดือน ปี ได้ โดยถ้าเลือกเป็น พศ. 
