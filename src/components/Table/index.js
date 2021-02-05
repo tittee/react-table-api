@@ -26,7 +26,7 @@ const Table = ({ columns, data }) => {
     <>
       <DateFormat />
 
-      <table className="table-auto" {...getTableProps()}>
+      <table className="table-auto w-full" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

@@ -1,15 +1,9 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLists } from '../../apis';
-
-import makeData from './makeData';
-import useList from './../hooks/useList';
-
-
 import { setLists } from '../../redux/lists';
-
 import Table from "./../Table";
-
+import { formatDateTime } from './../../utils/Utility';
 
 const TableShow = () => {
   const lists = useSelector((state) => state.lists.lists);
@@ -17,7 +11,7 @@ const TableShow = () => {
     
   const columns = useMemo(() => [
     {
-      Header: "ID",
+      Header: 'ID',
       accessor: 'id',
     },
     {
@@ -30,12 +24,16 @@ const TableShow = () => {
     },
     {
       Header: 'Create Date',
-      accessor: 'createdAt',
+      accessor: ((d) => {
+        return formatDateTime(d.createdAt);
+      })
     },
     {
       Header: 'Update Date',
-      accessor: 'updatedAt',
-    }
+      accessor: ((d) => {
+        return formatDateTime(d.updatedAt);
+      }),
+    },
   ]);
 
 
@@ -56,7 +54,7 @@ const TableShow = () => {
 
 
   return (
-    <div className="container mx-auto py-4 flex">
+    <div className="container mx-auto">
       {loading ? (
         <div>Loading...</div>
       ) : (
