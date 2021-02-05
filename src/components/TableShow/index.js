@@ -13,7 +13,7 @@ import Table from "./../Table";
 
 const TableShow = () => {
   const lists = useSelector((state) => state.lists.lists);
-  // const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
   
   const columns = useMemo(() => [
     {
@@ -43,12 +43,12 @@ const TableShow = () => {
 
   useEffect(() => {    
     const initLists = async () => {
-      const listsRes = await getLists();
-      console.log(listsRes.data);
+      const listsRes = await getLists();      
       if (listsRes) {        
         const lists = listsRes.data;    
         dispatch(setLists(lists));   
-      }
+        setLoading(false);
+      } 
     };
     initLists();
   }, []);
@@ -57,7 +57,11 @@ const TableShow = () => {
 
   return (
     <div className="container mx-auto">
-      <Table columns={columns} data={lists} />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Table columns={columns} data={lists} />
+      )}
     </div>
   );
 };
