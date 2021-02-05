@@ -14,7 +14,7 @@ import Table from "./../Table";
 const TableShow = () => {
   const lists = useSelector((state) => state.lists.lists);
   const [loading, setLoading] = useState(true);
-  
+    
   const columns = useMemo(() => [
     {
       Header: "ID",
@@ -56,7 +56,7 @@ const TableShow = () => {
 
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto py-4 flex">
       {loading ? (
         <div>Loading...</div>
       ) : (
