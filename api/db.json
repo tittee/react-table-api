@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "title": "My Stream",
+      "description": "This is a great stream.",
+      "id": 1,
+      "createdAt": "2021-02-02T16:41:28.592Z",
+      "updatedAt": "2021-02-02T16:41:46.075Z"
+    },
+    {
+      "title": "Other Stream",
+      "description": "Here's some stream",
+      "id": 2,
+      "createdAt": "2021-02-02T16:41:28.592Z",
+      "updatedAt": "2021-02-02T16:41:46.075Z"
+    },
+    {
+      "title": "My new stream",
+      "description": "This stream is about refactoring!!",
+      "id": 3,
+      "createdAt": "2021-02-02T16:41:28.592Z",
+      "updatedAt": "2021-02-02T16:41:46.075Z"
+    },
+    {
+      "title": "Programmatic Navigation",
+      "description": "You should not see this from page!!",      
+      "id": 4,
+      "createdAt": "2021-02-02T16:41:28.592Z",
+      "updatedAt": "2021-02-02T16:41:46.075Z"
+    },
+    {
+      "title": "Me Streaming Components Reuse!!",
+      "description": "Watch me refactor some component.",      
+      "id": 5,
+      "createdAt": "2021-02-02T16:41:28.592Z",
+      "updatedAt": "2021-02-02T16:41:46.075Z"
+    }
+  ]
+}
