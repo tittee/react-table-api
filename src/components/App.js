@@ -4,6 +4,12 @@ import { useTable, usePagination } from 'react-table';
 import './App.scss';
 import makeData from '../utils/makeData';
 
+import CustomDateFormat from './CustomDateFormat';
+
+import { registerLocale, setDefaultLocale } from 'react-datepicker';
+import th from 'date-fns/locale/th';
+registerLocale('th', th);
+
 const Styles = styled.div`
   padding: 1rem;
 `;
@@ -37,24 +43,16 @@ function Table({ columns, data }) {
     usePagination
   );
 
+  // const [startDate, setStartDate] = useState(new Date());
+
   // Render the UI for your table
   return (
     <>
-      <pre>
-        <code>
-          {JSON.stringify(
-            {
-              pageIndex,
-              pageSize,
-              pageCount,
-              canNextPage,
-              canPreviousPage,
-            },
-            null,
-            2
-          )}
-        </code>
-      </pre>
+      <h1>CK-THINK TESTS</h1>
+
+      <CustomDateFormat />
+      <hr />
+
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
