@@ -1,44 +1,100 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   useTable,
   useFilters,
   useGlobalFilter,
-  useAsyncDebounce,
+  // useAsyncDebounce,
   usePagination,
 } from 'react-table';
-import DateFormat from './../DateFormat';
+
 import Pagination from './components/Pagination';
 import GlobalFilter from './components/GlobalFilter';
+import DefaultColumnFilter from './components/DefaultColumnFilter';
+import { fuzzyTextFilterFn } from './../../utils/Utility';
 
+// Our table component
+const Table = ({ columns, data, fetchData, loading, pageCount: pagePropsCount }) => {
+  
+  // console.log(pagePropsCount);
+  const filterTypes = useMemo(
+    () => ({
+      // Add a new fuzzyTextFilterFn filter type.
+      fuzzyText: fuzzyTextFilterFn,
+      // Or, override the default text filter to use
+      // "startWith"
+      text: (rows, id, filterValue) => {
+        return rows.filter((row) => {
+          const rowValue = row.values[id];
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true;
+        });
+      },
+    }),
+    []
+  );
 
-const Table = ({ columns, data }) => {
-  // Use the state and functions returned from useTable to build your UI
+  const defaultColumn = useMemo(
+    () => ({
+      // Let's set up our default Filter UI
+      Filter: DefaultColumnFilter,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    rows,
     prepareRow,
-    page, // Instead of using 'rows', we'll use page,
     state,
     visibleColumns,
     preGlobalFilteredRows,
-    setGlobalFilter
+    setGlobalFilter,
+
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    // Get the state from the instance
+    state: { pageIndex, pageSize },
+   
+    
   } = useTable(
     {
       columns,
       data,
-      initialState: { pageIndex: 2 },
+      defaultColumn, // Be sure to pass the defaultColumn option
+      filterTypes,
+      initialState: { pageIndex: 0 },
+      manualPagination: true, // Tell the usePagination
+      pageCount: pagePropsCount,
     },
-    useFilters,    
-    useGlobalFilter,
-    usePagination
+    useFilters, // useFilters!
+    useGlobalFilter, // useGlobalFilter!
+    usePagination, // usePagination
   );
 
-  // Render the UI for your table
+  // We don't want to render all of the rows for this example, so cap
+  // it for this use case
+  const firstPageRows = rows.slice(0, 10);
+
+  // Listen for changes in pagination and use the state to fetch our new data
+  useEffect(() => {
+    fetchData({ pageIndex, pageSize })
+  }, [fetchData, pageIndex, pageSize])
+  
   return (
     <>
-      <DateFormat />
-
+      <h3 className="font-bold antialiased text-5xl mb-4">React Datatable</h3>
       <table className="table-auto w-full" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -47,7 +103,7 @@ const Table = ({ columns, data }) => {
                 <th {...column.getHeaderProps()}>
                   {column.render('Header')}
                   {/* Render the columns filter UI */}
-                  {/* <div>{column.canFilter ? column.render('Filter') : null}</div> */}
+                  <div>{column.canFilter ? column.render('Filter') : null}</div>
                 </th>
               ))}
             </tr>
@@ -63,8 +119,6 @@ const Table = ({ columns, data }) => {
                 preGlobalFilteredRows={preGlobalFilteredRows}
                 globalFilter={state.globalFilter}
                 setGlobalFilter={setGlobalFilter}
-                columns={columns}
-                data={data}
               />
             </th>
           </tr>
@@ -81,17 +135,31 @@ const Table = ({ columns, data }) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                   );
-                })}
+                })}                
               </tr>
             );
           })}
+          <tr>
+          {loading ? (
+            // Use our custom loading state to show a loading indicator
+            <td colSpan="5">Loading...</td>
+          ) : (
+            <td colSpan="5">
+              Showing {page.length} of ~{pagePropsCount * pageSize}{' '}
+              results
+            </td>
+          )}
+          </tr>
         </tbody>
       </table>
       {/* 
         Pagination can be built however you'd like. 
         This is just a very basic UI implementation:
       */}
-      <Pagination columns={columns} data={data} />
+
+      <Pagination columns={columns}
+          data={data} />      
+      
     </>
   );
 };
