@@ -16,7 +16,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import lists from './lists';
+import lists from './data';
 
 const rootReducer = combineReducers({ lists });
 

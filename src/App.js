@@ -1,10 +1,12 @@
 import React from 'react';
-import './App.scss';
+import './styles/tailwind.css';
+import './App.css';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/lib/integration/react';
-
 import TableShow from './components/TableShow';
+
+
 
 function App() {
   return (
