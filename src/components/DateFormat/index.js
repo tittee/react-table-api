@@ -1,23 +1,49 @@
-import React, { useState } from 'react';
-import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import th from 'date-fns/locale/th';
-registerLocale('th', th);
+import 'date-fns';
+import React from 'react';
+import Grid from '@material-ui/core/Grid';
+// import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from '@date-io/dayjs';
+import {
+  MuiPickersUtilsProvider,  
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
-// CSS Modules, react-datepicker-cssmodules.css
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+export default function MaterialUIPickers() {
+  // The first commit of Material-UI
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2020-08-18T21:11:54'));
 
-const CustomDateFormat = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   return (
-    <DatePicker
-      locale="th"
-      dateFormat="yyyy/MM/dd"
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
-    />
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Grid container justify="space-around">
+        <KeyboardDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/DD/YYYY"
+          margin="normal"
+          id="date-picker-inline"
+          label="Date picker inline"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+        <KeyboardDatePicker
+          margin="normal"
+          id="date-picker-dialog"
+          label="Date picker dialog"
+          format="MM/DD/YYYY"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />       
+      </Grid>
+    </MuiPickersUtilsProvider>
   );
-};
-
-export default CustomDateFormat;
+}
