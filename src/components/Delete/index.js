@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 
-import { removeItem } from '../../utils/useData';
+import Modal from './../Modal';
+// import { removeItem } from '../../utils/useData';
 
 const Delete = (props) => {
-  const onDelete = (e) => {
-    e.preventDefault();
-    console.log(props.row.id);
+  const [open, setOpen] = useState(false);
+
+  const onDelete = () => {
+    setOpen(true);
+    // items.removeItem(e.target.name);
+  };
+
+  const onClose = () => {
+    setOpen(false);
     // items.removeItem(e.target.name);
   };
 
   return (
-    <Button variant="contained" color="secondary" onClick={onDelete}>
-      Delete
-    </Button>
+    <>
+      <Button variant="contained" color="secondary" onClick={onDelete}>
+        DELETE
+      </Button>
+      <Modal open={open} closeModal={onClose} />
+    </>
   );
 };
 
