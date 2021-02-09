@@ -1,116 +1,62 @@
-import React, { useMemo, useEffect, useCallback, useRef, useState } from 'react';
-import { formatDateTime } from './../../utils/Utility';
-// import useData from './../hooks/useData';
-// import useCustomFetch from './../hooks/useCustomFetch';
-import Table from './../Table';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSlice } from './../../redux/data';
+import React, { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
+import DataTableExtensions from 'react-data-table-component-extensions';
+import { columns } from '../../data/data';
+import {Container, Card, Checkbox} from '@material-ui/core';
+import SortIcon from '@material-ui/icons/ArrowDownward';
+import 'react-data-table-component-extensions/dist/index.css';
+
 import { getLists } from '../../apis';
 
+import Loading from './../Loading';
+
 const TableShow = () => {
-  const dispatch = useDispatch();
-  
-  // const data = useSelector((state) => state.data.data);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [pageCount, setPageCount] = useState(0);
-  const fetchIdRef = useRef(0);
   
-  // const [data, loading] = useCustomFetch();
   useEffect(() => {
     const initLists = async () => {
-      const listsRes = await getLists();
-      if (listsRes) {
-        // const data = listsRes.data;
-        dispatch(setData(listsRes.data));
+      const res = await getLists();
+      if (res) {        
+        setData(res.data);
         setLoading(false);
       }
     };
     initLists();
   }, []);
-  
-  const [data, setData] = useState([]);  
-  
-  const fetchData = useCallback(({ pageSize, pageIndex }) => {   
 
-      
-      // Give this fetch an ID
-      const fetchId = ++fetchIdRef.current;
+  const tableData = {
+    columns,
+    data,
+  };
 
-      // Set the loading state
-      // setLoading(true);
-
-      // We'll even set a delay to simulate a server here
-      setTimeout(() => {
-        // Only update the data if this is the latest fetch
-        if (fetchId === fetchIdRef.current) {
-          const startRow = pageSize * pageIndex;
-          const endRow = startRow + pageSize;          
-          setData(dispatch(
-            setSlice({
-              start: startRow,
-              end: endRow,
-            })));
-          // items.sliceItem( data, startRow, endRow);   
-          setPageCount(Math.ceil(data.length / pageSize));
-          
-        }
-      }, 1000);
-    // }; 
-    // initLists();
-  }, []);
-  
-  
-
-  const column = useMemo(() => [
-    {
-      Header: 'ID',
-      accessor: 'id',
-      Filter: '',
-      filter: '',
-    },
-    {
-      Header: 'Title',
-      accessor: 'title',
-      Filter: '',
-      filter: '',
-    },
-    {
-      Header: 'Description',
-      accessor: 'description',
-      Filter: '',
-      filter: '',
-    },
-    {
-      Header: 'Create Date',
-      accessor: (d) => {
-        return formatDateTime(d.createdAt);
-      },
-      Filter: '',
-      filter: '',
-    },
-    {
-      Header: 'Update Date',
-      accessor: (d) => {
-        return formatDateTime(d.updatedAt);
-      },
-      Filter: '',
-      filter: '',
-    },
-  ]);
-
-  
+  const isIndeterminate = (indeterminate) => indeterminate;
+  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
 
   return (
-    <div className="container py-8 mx-auto">
-
-        <Table
-          columns={column}
-          data={data}
-          fetchData={fetchData}
-          loading={loading}
-          pageCount={pageCount}
-        />      
-    </div>
+    <Container maxWidth="lg">      
+      <Card>
+      { !loading ? (
+        <DataTableExtensions {...tableData}>
+          <DataTable
+            columns={columns}
+            data={data}
+            noHeader
+            sortIcon={<SortIcon />}
+            defaultSortField="id"
+            defaultSortAsc={false}
+            pagination
+            highlightOnHover
+            selectableRows
+            selectableRowsComponent={Checkbox}
+            selectableRowsComponentProps={selectableRowsComponentProps}
+          />
+        </DataTableExtensions>
+      ) : (
+        <Loading text="Please run api first" />
+      )}
+      </Card>
+    </Container>
   );
 };
 
