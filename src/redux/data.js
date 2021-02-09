@@ -1,23 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const listSlice = createSlice({
+const dataSlice = createSlice({
   name: 'Data',
-  initialState: {
-    currentData: false,
-    data: [],
-    filteredLists: false,
+  initialState: {  
+    data: [],      
   },
-  reducers: {
-    setCurrentData: (state, action) => {
-      state.currentData = action.payload;
-    },
-    setData: (state, action) => {
-      state.data = action.payload;
-      // state.filteredData = state.data.slice(startRow, endRow);
-      // state.filteredDatas = action.payload;
+  reducers: {   
+    setSlice: (state, action) => {                  
+      const copy = [...state.data];
+      copy.splice(action.payload.start, action.payload.end);
+      state.data = copy;
     },
   },
 });
 
-export const { setCurrentData, setData } = listSlice.actions;
-export default listSlice.reducer;
+export const { setSlice } = dataSlice.actions;
+export default dataSlice.reducer;

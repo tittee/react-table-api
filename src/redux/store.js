@@ -16,14 +16,14 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import lists from './data';
+import data from './data';
 
-const rootReducer = combineReducers({ lists });
+const rootReducer = combineReducers({ data });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['listSlice'], //Things u want to persist
+  whitelist: ['dataSlice'], //Things u want to persist
   // blacklist: [''], //Things u dont
 };
 
