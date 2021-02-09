@@ -1,7 +1,8 @@
 import React from 'react';
 import { formatDateTime } from './../utils/Utility';
 import Edit from './../components/Edit';
-import Delete from './../components/Delete';
+import Delete from './../components/Delete';;
+
 export const columns = [
   {
     name: 'Title',
