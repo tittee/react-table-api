@@ -3,11 +3,14 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import { makeStyles } from '@material-ui/core/styles';
 import { columns } from '../../data/data';
-import { Container, Card, Checkbox } from '@material-ui/core';
+import { Container, Card } from '@material-ui/core';
 import SortIcon from '@material-ui/icons/ArrowDownward';
 import 'react-data-table-component-extensions/dist/index.css';
 
+import { useDispatch, useSelector } from 'react-redux'; 
+
 import { getLists } from '../../apis';
+import { setLastId } from './../../redux/data';
 
 import Loading from './../Loading';
 import DateFormat from './../DateFormat';
@@ -19,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TableShow = () => {
+  const dispatch = useDispatch();
+  
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +35,7 @@ const TableShow = () => {
       if (res) {
         setData(res.data);
         setLoading(false);
+        dispatch(setLastId(res.data.length));
       }
     };
     initLists();

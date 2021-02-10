@@ -9,7 +9,6 @@ function rand() {
 
 function getModalStyle() {
   const top = 50 + rand();
-  const left = 50 + rand();
 
   return {
     top: `${top}%`,
@@ -69,27 +68,26 @@ const Delete = ({ row }) => {
             email: '',
           }}
           onSubmit={async (values) => {
-            await new Promise((r) => setTimeout(r, 500));
+            await new Promise((r) =>  setTimeout(r, 500));
             alert(JSON.stringify(values, null, 2));
           }}
         >
           <Form className="flex flex-wrap">
             <div className="flex-none w-full flex justify-center mt-6">
               <Button
-                variant="contained"
-                color="primary"
+                variant="contained"                
                 className={classes.button}
-                onClick={deleteData}
+                onClick={onCloseModal}
               >
-                DELETE
+                CANCEL
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
                 className={classes.button}
-                onClick={onCloseModal}
+                onClick={deleteData}
               >
-                CANCEL
+                DELETE
               </Button>
             </div>
           </Form>

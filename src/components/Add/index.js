@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import FromControl from '../FromControl';
+import { setCloseModal } from './../../redux/data';
+import { useDispatch } from 'react-redux';
 
 const Add = (props) => {
-  const [open, setOpen] = useState(false);
-
-  const onDelete = () => {
-    setOpen(true);
-    // items.removeItem(e.target.name);
-  };
+  const dispatch = useDispatch();
 
   const onCloseModal = () => {
-    setOpen(false);
-    // items.removeItem(e.target.name);
+    dispatch(setCloseModal(false));
   };
 
   return (
     <>
       <div className={classes.root}>
-        <FromControl title="Delete" open={open} closeModal={onCloseModal} />
+        <FromControl title="Create" open={open} closeModal={onCloseModal} />
       </div>
     </>
   );

@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import { Formik, Field, Form } from 'formik';
+import { useFormik, Field, Form } from 'formik';
 import Button from '@material-ui/core/Button';
+import { createList } from './../../apis';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCloseModal } from './../../redux/data';
+
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
+const validate = values => {
+  const errors = {};
+
+  if (!values.title) {
+    errors.title = 'Required';
+  } 
+
+  if (!values.description) {
+    errors.description = 'Required';
+  }
+
+  return errors;
+};
+
 function getModalStyle() {
   const top = 50 + rand();
-  const left = 50 + rand();
+  // const left = 50 + rand();
 
   return {
     top: `${top}%`,
@@ -32,14 +50,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FromControl = ({ title, open, closeModal }) => {
+  const dispatch = useDispatch();
+  const isClose = useSelector((state) => state.data.isClose );
+  const lastId = useSelector((state) => state.data.lastId);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
-  const [close, setClose] = useState(true);
+  const [close, setClose] = useState(false)
 
-  const createData = (e) => {
-    e.preventDefault();
-  };
+  const fireModal = () => {
+    dispatch(setCloseModal(true));
+  }
+  
+  
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      description: '',            
+    },
+    validate,
+    onSubmit: async values => {
+      const r = await createList({...values, lastId});                 
+      if ( r.data ) {
+        dispatch(setCloseModal(true));
+      }         
+    }
+  });
 
   const body = (
     <div
@@ -50,46 +86,47 @@ const FromControl = ({ title, open, closeModal }) => {
         <h1 className="font-bold text-blue-900 text-center text-4xl mb-5">
           {title}
         </h1>
-        <Formik
-          initialValues={{
-            firstName: '',
-            lastName: '',
-            email: '',
-          }}
-          onSubmit={async (values) => {
-            await new Promise((r) => setTimeout(r, 500));
-            alert(JSON.stringify(values, null, 2));
-          }}
-        >
-          <Form className="flex flex-wrap">
+          <form className="flex flex-wrap" onSubmit={formik.handleSubmit}>          
             <div className="flex flex-nowrap items-center w-full mb-3">
-              <label htmlFor="firstName" className="block w-1/4">
+              <label htmlFor="title" className="block w-1/4">
                 Title :
               </label>
-              <Field
+              <input
                 id="title"
                 name="title"
-                placeholder="Jane"
+                type="text"
+                value={formik.values.title}
+                placeholder="Please enter title"                
                 className="ml-3 py-1 px-3 border border-gray-300 rounded-lg w-3/4"
+                onChange={formik.handleChange}
               />
+              {formik.errors.title && formik.touched.title ? (
+                <div>{formik.errors.title}</div>
+              ) : null}
             </div>
             <div className="flex flex-nowrap items-center w-full mb-3">
               <label htmlFor="description" className="block w-1/4">
                 Description :
               </label>
-              <Field
+              <input
                 id="description"
                 name="description"
-                placeholder="Doe"
+                type="text"
+                value={formik.values.description}
+                placeholder="Please enter description"                
                 className="ml-3 py-1 px-3 border border-gray-300 rounded-lg w-3/4"
+                onChange={formik.handleChange}
               />
+              {formik.errors.description && formik.touched.description ? (
+                <div>{formik.errors.description}</div>
+              ) : null}
             </div>
             <div className="flex-none w-full flex justify-center mt-6">
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                onClick={createData}
+                type="submit"
               >
                 Submit
               </Button>
@@ -102,8 +139,8 @@ const FromControl = ({ title, open, closeModal }) => {
                 Cancel
               </Button>
             </div>
-          </Form>
-        </Formik>
+          </form>
+        
       </div>
     </div>
   );
@@ -112,7 +149,7 @@ const FromControl = ({ title, open, closeModal }) => {
     <div>
       <Modal
         open={open}
-        onClose={closeModal}
+        onClose={fireModal}
         disableEscapeKeyDown
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
