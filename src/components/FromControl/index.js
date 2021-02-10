@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { useFormik, Field, Form } from 'formik';
 import Button from '@material-ui/core/Button';
-import { createList } from './../../apis';
+import { createList, editList } from './../../apis';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCloseModal } from './../../redux/data';
 
@@ -49,8 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FromControl = ({ title, open, closeModal }) => {
+const FromControl = ({ title, open, closeModal, item }) => {
   const dispatch = useDispatch();
+  
   const isClose = useSelector((state) => state.data.isClose);
   const lastId = useSelector((state) => state.data.lastId);
   const classes = useStyles();
@@ -64,14 +65,21 @@ const FromControl = ({ title, open, closeModal }) => {
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      description: '',
+      title: item && item.title ? item.title : '',
+      description: item && item.description ? item.description : '',
     },
     validate,
     onSubmit: async (values) => {
-      const r = await createList({ ...values, lastId });
-      if (r.data) {
-        dispatch(setCloseModal(true));
+      if ( !item ) {
+        const r = await createList({ ...values, lastId });
+        if (r.data) {
+          dispatch(setCloseModal(true));
+        }
+      } else {
+        const r = await editList(item.id , values);
+        if (r.data) {
+          dispatch(setCloseModal(true));
+        }
       }
     },
   });

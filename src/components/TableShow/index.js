@@ -38,7 +38,7 @@ const TableShow = () => {
       }
     };
     initLists();
-  }, [data]);
+  }, []);
 
   const tableData = {
     columns,

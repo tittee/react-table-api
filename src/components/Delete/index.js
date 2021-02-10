@@ -54,12 +54,8 @@ const Delete = ({ row }) => {
   const deleteData = async (e) => {
     e.preventDefault();
     const r = await deleteList(row.id);
-
     const index = data.findIndex((r) => r === row);
-
-    dispatch(setData([...data.slice(0, index), ...data.slice(index + 1)]));
-
-    
+    dispatch(setData([...data.slice(0, index), ...data.slice(index + 1)]));    
   };
 
   const body = (

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FromControl from '../FromControl';
 import { setCloseModal } from './../../redux/data';
 import { useDispatch } from 'react-redux';
 
 
-const Add = (props) => {
+const Add = () => {
   const dispatch = useDispatch();
+  
 
   const onCloseModal = () => {
     dispatch(setCloseModal(false));
