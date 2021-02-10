@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Formik, Field, Form } from 'formik';
@@ -31,10 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleModal({ title, open, closeModal }) {
+const FromControl = ({ title, open, closeModal }) => {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
+  const [modalStyle] = useState(getModalStyle);
+  const [close, setClose] = useState(true);
+
+  const createData = (e) => {
+    e.preventDefault();
+  };
 
   const body = (
     <div
@@ -84,6 +89,7 @@ export default function SimpleModal({ title, open, closeModal }) {
                 variant="contained"
                 color="primary"
                 className={classes.button}
+                onClick={createData}
               >
                 Submit
               </Button>
@@ -91,6 +97,7 @@ export default function SimpleModal({ title, open, closeModal }) {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
+                onClick={closeModal}
               >
                 Cancel
               </Button>
@@ -114,4 +121,6 @@ export default function SimpleModal({ title, open, closeModal }) {
       </Modal>
     </div>
   );
-}
+};
+
+export default FromControl;

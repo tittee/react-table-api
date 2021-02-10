@@ -1,16 +1,17 @@
 import 'date-fns';
-import React , {useState} from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 import DateFnsUtils from '@date-io/dayjs';
 import {
-  MuiPickersUtilsProvider,  
+  MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import FromControl from '../FromControl';
 
-import Modal from './../Modal';
+// import Modal from './../Modal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 
 export default function MaterialUIPickers() {
   const classes = useStyles();
@@ -31,50 +31,57 @@ export default function MaterialUIPickers() {
     setSelectedDate(date);
   };
 
-
   const onAdd = () => {
-    setOpen(true);    
+    setOpen(true);
   };
 
   const onClose = () => {
-    setOpen(false);    
+    setOpen(false);
   };
-  
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="center" alignItems="center">
-          <div className={classes.root}>
-            <Button variant="contained" style={{ height: 'max-content' }} onClick={onAdd}>
-              Add New
-            </Button>
+        <div className={classes.root}>
+          <Button
+            variant="contained"
+            style={{ height: 'max-content' }}
+            onClick={onAdd}
+          >
+            Add New
+          </Button>
 
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/DD/YYYY"
-              margin="normal"
-              id="date-picker-inline"
-              label="Date picker inline"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-            <KeyboardDatePicker
-              margin="normal"
-              id="date-picker-dialog"
-              label="Date picker dialog"
-              format="MM/DD/YYYY"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/DD/YYYY"
+            margin="normal"
+            id="date-picker-inline"
+            label="Date picker inline"
+            value={selectedDate}
+            onChange={handleDateChange}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+          <KeyboardDatePicker
+            margin="normal"
+            id="date-picker-dialog"
+            label="Date picker dialog"
+            format="MM/DD/YYYY"
+            value={selectedDate}
+            onChange={handleDateChange}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
         </div>
       </Grid>
-      <Modal open={open} closeModal={onClose} title="Create New"></Modal>
+      <FromControl
+        open={open}
+        closeModal={onClose}
+        title="Create New"
+      ></FromControl>
     </MuiPickersUtilsProvider>
   );
 }
