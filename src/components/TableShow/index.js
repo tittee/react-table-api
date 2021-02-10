@@ -40,8 +40,6 @@ const TableShow = () => {
     data,
   };
 
-  const isIndeterminate = (indeterminate) => indeterminate;
-  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
 
   return (
     <Container className={classes.root} maxWidth="lg">
@@ -58,10 +56,7 @@ const TableShow = () => {
                 defaultSortField="id"
                 defaultSortAsc={false}
                 pagination
-                highlightOnHover
-                selectableRows
-                selectableRowsComponent={Checkbox}
-                selectableRowsComponentProps={selectableRowsComponentProps}
+                highlightOnHover                
               />
             </DataTableExtensions>
           </>
