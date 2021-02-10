@@ -2,17 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const dataSlice = createSlice({
   name: 'Data',
-  initialState: {  
-    data: [],      
+  initialState: {
+    data: [],
+    lastId: 0,
+    isClose: 0,
   },
-  reducers: {   
-    setSlice: (state, action) => {                  
-      const copy = [...state.data];
-      copy.splice(action.payload.start, action.payload.end);
-      state.data = copy;
+  reducers: {
+    setLastId: (state, action) => {      
+      state.lastId = action.payload + 1;
+    },
+    setCloseModal: (state, action) => {     
+      state.isClose = action.payload;
     },
   },
 });
 
-export const { setSlice } = dataSlice.actions;
+export const { setLastId, setCloseModal } = dataSlice.actions;
 export default dataSlice.reducer;

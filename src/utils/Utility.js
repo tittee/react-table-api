@@ -40,3 +40,7 @@ export const showError = ( msg ) => {
     }
   });
 } 
+
+export const getLastId = (lastId) => {
+  return lastId + 1;
+};

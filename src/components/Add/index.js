@@ -1,25 +1,23 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import { Formik, Field, Form } from 'formik';
-import Modal from './../Modal';
+import React, { useState } from 'react';
+import FromControl from '../FromControl';
+import { setCloseModal } from './../../redux/data';
+import { useDispatch } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-}));
 
-const Add = () => {
-  const classes = useStyles();
+const Add = (props) => {
+  const dispatch = useDispatch();
+
+  const onCloseModal = () => {
+    dispatch(setCloseModal(false));
+  };
 
   return (
-    <div className={classes.root}>
-      <Modal open={open} closeModal={onClose}></Modal>
-    </div>
+    <>
+      <div className={classes.root}>
+        <FromControl title="Create" open={open} closeModal={onCloseModal} />
+      </div>
+    </>
   );
 };
+
 export default Add;
