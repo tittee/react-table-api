@@ -10,7 +10,7 @@ import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux'; 
 
 import { getLists } from '../../apis';
-import { setLastId } from './../../redux/data';
+import { setData, setLastId } from './../../redux/data';
 
 import Loading from './../Loading';
 import DateFormat from './../DateFormat';
@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TableShow = () => {
   const dispatch = useDispatch();
-  
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,18 +33,17 @@ const TableShow = () => {
       const res = await getLists();
       if (res) {
         setData(res.data);
-        setLoading(false);
         dispatch(setLastId(res.data.length));
+        setLoading(false);
       }
     };
     initLists();
-  }, []);
+  }, [data]);
 
   const tableData = {
     columns,
     data,
   };
-
 
   return (
     <Container className={classes.root} maxWidth="lg">
@@ -62,7 +60,7 @@ const TableShow = () => {
                 defaultSortField="id"
                 defaultSortAsc={false}
                 pagination
-                highlightOnHover                
+                highlightOnHover
               />
             </DataTableExtensions>
           </>
@@ -72,6 +70,6 @@ const TableShow = () => {
       </Card>
     </Container>
   );
-};
+};;;
 
 export default TableShow;

@@ -8,14 +8,17 @@ const dataSlice = createSlice({
     isClose: 0,
   },
   reducers: {
-    setLastId: (state, action) => {      
+    setData: (state, action) => {
+      state.data = action.payload + 1;
+    },
+    setLastId: (state, action) => {
       state.lastId = action.payload + 1;
     },
-    setCloseModal: (state, action) => {     
+    setCloseModal: (state, action) => {
       state.isClose = action.payload;
     },
   },
 });
 
-export const { setLastId, setCloseModal } = dataSlice.actions;
+export const { setData, setLastId, setCloseModal } = dataSlice.actions;
 export default dataSlice.reducer;
