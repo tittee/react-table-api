@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 
 import Modal from './../Modal';
-// import { removeItem } from '../../utils/useData';
+
 
 const Delete = (props) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +22,7 @@ const Delete = (props) => {
       <Button variant="contained" color="secondary" onClick={onDelete}>
         DELETE
       </Button>
-      <Modal open={open} closeModal={onClose} />
+      <Modal open={open} closeModal={onClose}></Modal>
     </>
   );
 };
