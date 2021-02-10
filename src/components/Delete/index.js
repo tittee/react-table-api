@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Formik, Field, Form } from 'formik';
 import Button from '@material-ui/core/Button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteList } from './../../apis';
+import { setData } from './../../redux/data';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -34,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Delete = ({ row }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const data = useSelector((state) => state.data.data);
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);  
   const [open, setOpen] = useState(false);
@@ -51,6 +54,8 @@ const Delete = ({ row }) => {
   const deleteData = async (e) => {
     e.preventDefault();
     const r = await deleteList(row.id);
+    const index = data.findIndex((r) => r === row);
+    dispatch(setData([...data.slice(0, index), ...data.slice(index + 1)]));    
   };
 
   const body = (

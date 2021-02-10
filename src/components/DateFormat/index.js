@@ -81,6 +81,7 @@ export default function MaterialUIPickers() {
         open={open}
         closeModal={onClose}
         title="Create New"
+        item=""
       ></FromControl>
     </MuiPickersUtilsProvider>
   );
