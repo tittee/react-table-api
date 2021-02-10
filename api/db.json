@@ -232,20 +232,6 @@
       "updatedAt": "2021-02-10T17:05:39.062Z"
     },
     {
-      "title": "as",
-      "description": "asas",
-      "id": 34,
-      "createdAt": "2021-02-10T17:06:51.320Z",
-      "updatedAt": "2021-02-10T17:06:51.320Z"
-    },
-    {
-      "title": "asas",
-      "description": "asasa",
-      "id": 35,
-      "createdAt": "2021-02-10T17:07:09.980Z",
-      "updatedAt": "2021-02-10T17:07:09.980Z"
-    },
-    {
       "title": "Annotation",
       "description": "Save your life",
       "id": 36,
@@ -258,13 +244,6 @@
       "id": 37,
       "createdAt": "2021-02-10T17:08:57.817Z",
       "updatedAt": "2021-02-10T17:08:57.817Z"
-    },
-    {
-      "title": "as",
-      "description": "as",
-      "id": 38,
-      "createdAt": "2021-02-10T17:43:27.821Z",
-      "updatedAt": "2021-02-10T17:43:27.821Z"
     }
   ]
 }

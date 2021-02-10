@@ -62,6 +62,22 @@ const FromControl = ({ title, open, closeModal }) => {
     dispatch(setCloseModal(true));
   }
   
+  const [filterText, setFilterText] = React.useState('');
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const filteredItems = fakeUsers.filter(item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()));
+
+  const subHeaderComponentMemo = React.useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText('');
+      }
+    };
+
+    return <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />;
+  }, [filterText, resetPaginationToggle]);
+
+
   
   const formik = useFormik({
     initialValues: {
@@ -145,7 +161,44 @@ const FromControl = ({ title, open, closeModal }) => {
     </div>
   );
 
+  // const { data, toggleCleared } = this.state;
+
+  // state = { selectedRows: [], toggleCleared: false, data: tableDataItems };
+
+  // handleChange = state => {
+  //   this.setState({ selectedRows: state.selectedRows });
+  // };
+
+  // handleRowClicked = row => {
+    
+  //   console.log(`${row.name} was clicked!`);
+  // }
+
+  // deleteAll = () => {
+  //   const { selectedRows } = this.state;
+  //   const rows = selectedRows.map(r => r.name);
+    
+  //   if (window.confirm(`Are you sure you want to delete:\r ${rows}?`)) {
+  //     this.setState(state => ({ toggleCleared: !state.toggleCleared, data: differenceBy(state.data, state.selectedRows, 'name') }));
+  //   }
+  // }
+
+  // deleteOne = row => {
+    
+  //   if (window.confirm(`Are you sure you want to delete:\r ${row.name}?`)) {
+  //     const { data } = this.state;
+  //     const index = data.findIndex(r => r === row);
+
+  //     this.setState(state => ({
+  //       toggleCleared: !state.toggleCleared,
+  //       data: [...state.data.slice(0, index), ...state.data.slice(index + 1)],
+  //     }));
+  //   }
+  // }
+
+
   return (
+    
     <div>
       <Modal
         open={open}

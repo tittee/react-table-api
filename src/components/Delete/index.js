@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Formik, Field, Form } from 'formik';
 import Button from '@material-ui/core/Button';
+import { useDispatch } from 'react-redux';
+import { deleteList } from './../../apis';
+
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
@@ -45,8 +48,9 @@ const Delete = ({ row }) => {
   };
 
   
-  const deleteData = (e) => {
+  const deleteData = async (e) => {
     e.preventDefault();
+    const r = await deleteList(row.id);
   };
 
   const body = (
@@ -61,21 +65,11 @@ const Delete = ({ row }) => {
         <h3 className="font-medium text-blue-900 text-center text-lg mb-5">
           Do you want to delete {row.title}?
         </h3>
-        <Formik
-          initialValues={{
-            firstName: '',
-            lastName: '',
-            email: '',
-          }}
-          onSubmit={async (values) => {
-            await new Promise((r) =>  setTimeout(r, 500));
-            alert(JSON.stringify(values, null, 2));
-          }}
-        >
+        <Formik>
           <Form className="flex flex-wrap">
             <div className="flex-none w-full flex justify-center mt-6">
               <Button
-                variant="contained"                
+                variant="contained"
                 className={classes.button}
                 onClick={onCloseModal}
               >

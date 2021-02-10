@@ -22,11 +22,13 @@ export const createList = async (formValues) => {
 };
 
 // EDIT
-export const editStream = (id, formValues) => async dispatch => {
-  return await lists.patch(`/data/${id}`, formValues);
+export const editList = async (id, formValues) => {
+  return await lists
+    .patch(`/data/${id}`, formValues)
+    .catch((err) => console.log(err));
 };
 
 // DELETE
-export const deleteStream = (id) => async dispatch => {
-  return await lists.delete(`/data/${id}`);
+export const deleteList = async (id) => {
+  return await lists.delete(`/data/${id}`).catch((err) => console.log(err));
 };
