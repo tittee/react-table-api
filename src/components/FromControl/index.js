@@ -5,7 +5,7 @@ import { useFormik, Field, Form } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createList, editList } from './../../apis';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCloseModal } from './../../redux/data';
+import { setCloseModal, setLastId } from './../../redux/data';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -50,19 +50,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FromControl = ({ title, open, closeModal, item }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();  
   
-  const isClose = useSelector((state) => state.data.isClose);
-  const lastId = useSelector((state) => state.data.lastId);
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = useState(getModalStyle);
-  const [close, setClose] = useState(false);
-
-  const fireModal = () => {
-    dispatch(setCloseModal(true));
-  };
-
+  const classes = useStyles();  
+  const [modalStyle] = useState(getModalStyle);  
+  const [close, setClose] = useState(open);
   const formik = useFormik({
     initialValues: {
       title: item && item.title ? item.title : '',
@@ -70,16 +62,12 @@ const FromControl = ({ title, open, closeModal, item }) => {
     },
     validate,
     onSubmit: async (values) => {
-      if ( !item ) {
-        const r = await createList({ ...values, lastId });
-        if (r.data) {
-          dispatch(setCloseModal(true));
-        }
+      setClose(close);
+      if (!item) {
+        const r = await createList(values);
+        
       } else {
-        const r = await editList(item.id , values);
-        if (r.data) {
-          dispatch(setCloseModal(true));
-        }
+        const r = await editList(item.id, values);        
       }
     },
   });
@@ -151,46 +139,11 @@ const FromControl = ({ title, open, closeModal, item }) => {
     </div>
   );
 
-  // const { data, toggleCleared } = this.state;
-
-  // state = { selectedRows: [], toggleCleared: false, data: tableDataItems };
-
-  // handleChange = state => {
-  //   this.setState({ selectedRows: state.selectedRows });
-  // };
-
-  // handleRowClicked = row => {
-
-  //   console.log(`${row.name} was clicked!`);
-  // }
-
-  // deleteAll = () => {
-  //   const { selectedRows } = this.state;
-  //   const rows = selectedRows.map(r => r.name);
-
-  //   if (window.confirm(`Are you sure you want to delete:\r ${rows}?`)) {
-  //     this.setState(state => ({ toggleCleared: !state.toggleCleared, data: differenceBy(state.data, state.selectedRows, 'name') }));
-  //   }
-  // }
-
-  // deleteOne = row => {
-
-  //   if (window.confirm(`Are you sure you want to delete:\r ${row.name}?`)) {
-  //     const { data } = this.state;
-  //     const index = data.findIndex(r => r === row);
-
-  //     this.setState(state => ({
-  //       toggleCleared: !state.toggleCleared,
-  //       data: [...state.data.slice(0, index), ...state.data.slice(index + 1)],
-  //     }));
-  //   }
-  // }
-
   return (
     <div>
       <Modal
-        open={open}
-        onClose={fireModal}
+        open={close}
+        onClose={closeModal}
         disableEscapeKeyDown
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

@@ -14,9 +14,9 @@ export const createList = async (formValues) => {
     .post(`/data`, {
       title: formValues.title,
       description: formValues.description,
-      id: formValues.lastId, 
+      id: Math.random(),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     })
     .catch((err) => console.log(err));
 };

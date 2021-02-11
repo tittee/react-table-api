@@ -9,7 +9,6 @@ const Edit = (props) => {
   const [open, setOpen] = useState(false);
 
   const onCloseModal = () => {
-    // dispatch(setCloseModal(false));
     setOpen(false);
   };
 

@@ -25,7 +25,8 @@ export default function MaterialUIPickers() {
   const classes = useStyles();
   // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = React.useState(new Date()); // Default or '2020-08-18T21:11:54'
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);  
+  const [close, setClose] = useState(false);  
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -33,6 +34,10 @@ export default function MaterialUIPickers() {
 
   const onAdd = () => {
     setOpen(true);
+
+    if (!open) {
+      setClose(true);
+    }
   };
 
   const onClose = () => {
@@ -79,6 +84,7 @@ export default function MaterialUIPickers() {
       </Grid>
       <FromControl
         open={open}
+        close={close}
         closeModal={onClose}
         title="Create New"
         item=""

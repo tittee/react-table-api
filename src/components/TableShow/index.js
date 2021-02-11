@@ -10,7 +10,7 @@ import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux'; 
 
 import { getLists } from '../../apis';
-import { setData, setLastId } from './../../redux/data';
+import { setData } from './../../redux/data';
 
 import Loading from './../Loading';
 import DateFormat from './../DateFormat';
@@ -32,8 +32,7 @@ const TableShow = () => {
     const initLists = async () => {
       const res = await getLists();
       if (res) {
-        setData(res.data);
-        dispatch(setLastId(res.data.length));
+        setData(res.data);                
         setLoading(false);
       }
     };
