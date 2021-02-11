@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import FromControl from '../FromControl';
-import { setCloseModal } from './../../redux/data';
+import FromModal from '../FromModal';
 import { useDispatch } from 'react-redux';
+import Modal from '@material-ui/core/Modal';
 
 const Edit = (props) => {
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  const onCloseModal = () => {
-    // dispatch(setCloseModal(false));
+  const onHandleCloseModal = () => {
     setOpen(false);
   };
 
@@ -22,12 +20,21 @@ const Edit = (props) => {
       <Button variant="contained" color="primary" onClick={onEditHandle}>
         Edit
       </Button>
-      <FromControl
-        title="Edit"
-        open={open}
-        closeModal={onCloseModal}
-        item={props.row}
-      />
+     
+
+      <Modal
+        open={open}        
+        onBackdropClick={onHandleCloseModal}
+        disableEscapeKeyDown
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+         <FromModal
+            title="Edit"
+            item={props.row}
+            onHandleCloseModal={onHandleCloseModal}
+          ></FromModal>
+      </Modal>
     </>
   );
 };

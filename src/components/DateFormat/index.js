@@ -6,12 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import DateFnsUtils from '@date-io/dayjs';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  MuiPickersUtilsProvider,  
 } from '@material-ui/pickers';
-import FromControl from '../FromControl';
+import FromModal from '../FromModal';
+import Modal from '@material-ui/core/Modal';
 
-// import Modal from './../Modal';
+import FilterComponent from "./components/FilterComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,22 +22,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MaterialUIPickers() {
-  const classes = useStyles();
-  // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = React.useState(new Date()); // Default or '2020-08-18T21:11:54'
+  const classes = useStyles(); 
   const [open, setOpen] = useState(false);
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
+  const [filterText, setFilterText] = useState('');
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  // const filteredItems = fakeUsers.filter(
+  //   (item) =>
+  //     item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
+  // );
 
   const onAdd = () => {
     setOpen(true);
   };
 
-  const onClose = () => {
+  const onHandleCloseModal = () => {
     setOpen(false);
   };
+
+  const onFilter = (e) => {
+    setFilterText(e.target.value)
+  } 
+  
+  const handleClear = () => {
+    if (filterText) {
+      setResetPaginationToggle(!resetPaginationToggle);
+      setFilterText('');
+    }
+  };
+  
+
+
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -51,38 +66,24 @@ export default function MaterialUIPickers() {
             Add New
           </Button>
 
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/DD/YYYY"
-            margin="normal"
-            id="date-picker-inline"
-            label="Date picker inline"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-          <KeyboardDatePicker
-            margin="normal"
-            id="date-picker-dialog"
-            label="Date picker dialog"
-            format="MM/DD/YYYY"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
+          <FilterComponent onFilter={onFilter} onClear={handleClear} filterText={filterText}></FilterComponent>
         </div>
       </Grid>
-      <FromControl
-        open={open}
-        closeModal={onClose}
-        title="Create New"
-        item=""
-      ></FromControl>
+      
+      <Modal
+        open={open}        
+        onBackdropClick={onHandleCloseModal}
+        disableEscapeKeyDown
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+         <FromModal
+            title="Edit"
+            item=""
+            onHandleCloseModal={onHandleCloseModal}
+          ></FromModal>
+      </Modal>
+
     </MuiPickersUtilsProvider>
   );
 }

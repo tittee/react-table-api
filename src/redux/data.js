@@ -5,7 +5,7 @@ const dataSlice = createSlice({
   initialState: {
     data: [],
     lastId: 0,
-    isClose: 0,
+    isOpen: 0,
   },
   reducers: {
     setData: (state, action) => {
@@ -14,11 +14,11 @@ const dataSlice = createSlice({
     setLastId: (state, action) => {
       state.lastId = action.payload + 1;
     },
-    setCloseModal: (state, action) => {
-      state.isClose = action.payload;
+    setOpenModal: (state, action) => {
+      state.isOpen = action.payload;
     },
   },
 });
 
-export const { setData, setLastId, setCloseModal } = dataSlice.actions;
+export const { setData, setLastId, setOpenModal } = dataSlice.actions;
 export default dataSlice.reducer;
