@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+// import Modal from '@material-ui/core/Modal';
 import { useFormik, Field, Form } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createList, editList } from './../../apis';
@@ -11,12 +11,12 @@ function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
 
   if (!values.title) {
     errors.title = 'Required';
-  } 
+  }
 
   if (!values.description) {
     errors.description = 'Required';
@@ -49,11 +49,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FromControl = ({ title, open, closeModal, item }) => {
-  const dispatch = useDispatch();  
-  
-  const classes = useStyles();  
-  const [modalStyle] = useState(getModalStyle);  
+const FromModal = ({ title, open, onHandleCloseModal, item }) => {
+  console.log(open);
+  const classes = useStyles();
+  const [modalStyle] = useState(getModalStyle);
   const [close, setClose] = useState(open);
   const formik = useFormik({
     initialValues: {
@@ -64,13 +63,19 @@ const FromControl = ({ title, open, closeModal, item }) => {
     onSubmit: async (values) => {
       setClose(close);
       if (!item) {
-        const r = await createList(values);
-        
+        await createList(values);
+        onHandleCloseModal();
       } else {
-        const r = await editList(item.id, values);        
+        await editList(item.id, values);
+        onHandleCloseModal();
       }
     },
   });
+
+  const onCancel = () => {
+    // e.preventDefault();
+    onHandleCloseModal();
+  };
 
   const body = (
     <div
@@ -129,7 +134,7 @@ const FromControl = ({ title, open, closeModal, item }) => {
               variant="contained"
               color="secondary"
               className={classes.button}
-              onClick={closeModal}
+              onClick={onCancel}
             >
               Cancel
             </Button>
@@ -139,19 +144,7 @@ const FromControl = ({ title, open, closeModal, item }) => {
     </div>
   );
 
-  return (
-    <div>
-      <Modal
-        open={close}
-        onClose={closeModal}
-        disableEscapeKeyDown
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
-    </div>
-  );
+  return <>{body}</>;
 };
 
-export default FromControl;
+export default FromModal;
